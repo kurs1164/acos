@@ -9,7 +9,10 @@
   // echo "<pre>";
   //     print_r($check_products);
   //   echo "</pre>";
-  //   die();
+
+
+    // echo count($acosobj->number_purchase(4));
+    // die();
 ?>
 
 
@@ -71,7 +74,7 @@
             
             <td><?php echo $row['creater_name'] ?></td>
             <td><?php echo $row['genre'] ?></td>
-            <td><?php echo count($productlist) ?></td>
+            <td><?php echo count($acosobj->number_purchase($row['product_id'])) ?></td>
             <td><button type="submit" class="btn btn-danger">BANN</button></td>
             </tr>
         <?php } ?>
@@ -100,7 +103,7 @@
             <td><?php echo $row['product_name'] ?></td>
             <td><?php echo $row['genre'] ?></td>
             <td><?php echo $row['creater_name'] ?></td>
-            <td><?php echo $acosobj->number_purchase($row['product_id']); ?></td>
+            <td><?php echo  count($acosobj->number_purchase($row['product_id'])); ?></td>
             <td><button type="submit" class="btn btn-danger">BANN</button></td>
             </tr>
         <?php } ?>

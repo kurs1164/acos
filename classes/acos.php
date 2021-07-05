@@ -67,7 +67,7 @@
             // $conn = connection();
             //a simple updating query for img
             $sql = "INSERT INTO Users SET image = '$photoName' WHERE login_id = '$id'";
-            $result = $conn->query($sql);
+            $result = $this->conn->query($sql);
         
             if($result == FALSE){
                 echo "NO IMAGE";
@@ -137,7 +137,7 @@
             // $conn = connection();
             //a simple updating query for img
             $sql = "INSERT INTO creater SET pr_image = '$photoName' WHERE crelogin_id = '$id'";
-            $result = $conn->query($sql);
+            $result = $this->conn->query($sql);
         
             if($result == FALSE){
                 echo "ERROR:";
@@ -203,26 +203,26 @@
               return FALSE;
             }
         }
-        public function uploadPhoto($id,$photoName){
-            // the folder that will hold the uploaded files
-            $target_dir = 'images/';
-            //basename() gets the file name.. returns a value of string since filename is letters.
-            $target_file = $target_dir.basename($photoName);
-            // $conn = connection();
-            //a simple updating query for img
-            $sql = "INSERT INTO product SET image = '$photoName' WHERE crelogin_id = '$id'";
-            $result = $conn->query($sql);
+        // public function uploadPhoto($id,$photoName){
+        //     // the folder that will hold the uploaded files
+        //     $target_dir = 'images/';
+        //     //basename() gets the file name.. returns a value of string since filename is letters.
+        //     $target_file = $target_dir.basename($photoName);
+        //     // $conn = connection();
+        //     //a simple updating query for img
+        //     $sql = "INSERT INTO product SET image = '$photoName' WHERE crelogin_id = '$id'";
+        //     $result = $conn->query($sql);
         
-            if($result == FALSE){
-                die('unable to upload photo'.$conn->connect_error);
-            }else{
-                //move uploaded files creates a copy of your picture and moving it inside the directory
-                move_uploaded_file($_FILES['picture']['tmp_name'],$target_file);
-                header('location:read.php');
-            }
+        //     if($result == FALSE){
+        //         die('unable to upload photo'.$conn->connect_error);
+        //     }else{
+        //         //move uploaded files creates a copy of your picture and moving it inside the directory
+        //         move_uploaded_file($_FILES['picture']['tmp_name'],$target_file);
+        //         header('location:read.php');
+        //     }
         
         
-        }
+        // }
         public function select_genre($genre){
             $sql = "SELECT * FROM product INNER JOIN creater ON product.creater_id = creater.creater_id WHERE product.genre = '$genre'";
             $result = $this->conn->query($sql);
@@ -418,6 +418,8 @@
         }
         public function check_products(){
             $sql = "SELECT * FROM `cart` INNER JOIN product ON cart.product_id = product.product_id INNER JOIN creater ON product.creater_id = creater.creater_id WHERE cart.status = 'PURCHASED' GROUP BY product.product_name";
+            $sql2 = "SELECT * FROM `cart` INNER JOIN product ON cart.product_id = product.product_id INNER JOIN creater ON product.creater_id = creater.creater_id WHERE cart.status = 'PURCHASED' GROUP BY product.product_name";
+               
             
             $result = $this->conn->query($sql);
             if($result->num_rows>0){ //show how many data 
@@ -434,9 +436,20 @@
             $sql = "SELECT * FROM cart WHERE status = 'PURCHASED' AND product_id = '$id'";
             $result = $this->conn->query($sql);
            
+            $result = $this->conn->query($sql);
+            if($result->num_rows>0){ //show how many data 
+                $row = array(); //$row include all data z
+                while($rows = $result->fetch_assoc()){ 
+                    $row[] = $rows;
+                }
+                return $row;
+            }else{
+              return FALSE;
+            }
+           
 
 
-            return count($result->fetch_assoc());
+            
          
         }
         // public function count_product_purchases($product){
@@ -450,7 +463,3 @@
     // 3. create a fucntionality to change the details 
         // firstname, lastname,number, address
         // authencation
-
-
-    
-?>
